@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:if="${slugBook != null}">
+<head>
+    <title th:text="${slugBook.title}">Тут название страницы написать</title>
+    <meta name="description" content="Описание страницы">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link href="favicon.ico" rel="shortcut icon">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/fonts.min.css?v=87821122">
+    <link rel="stylesheet" href="/assets/css/basic.min.css?v=87821122">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/assets/css/extra.min.css?v=87821122">
+    <link rel="stylesheet" href="/assets/css/DownloadBookWindowStyle.css">
+<!--    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>-->
+    <script defer src="/assets/js/scripts.min.js?v=87821122"></script>
+</head>
+<body class="Site">
+<header class="Header" th:replace="~{fragments/common_header_fragment :: head(status='unauthorized')}"></header>
+<div class="Middle">
+    <div class="wrap">
+        <main class="Middle-main">
+            <ul class="breadcrumbs" th:fragment="breadcrumps">
+                <li class="breadcrumbs-item"><a th:href="@{/}" th:text="#{topbar.main}">Главная</a>
+                </li>
+                <li class="breadcrumbs-item"><a th:href="@{/genres}" th:text="#{topbar.genres}">Книги</a>
+                </li>
+                <li class="breadcrumbs-item breadcrumbs-item_current" th:text="${slugBook.title}"><span>Мара и морок</span>
+                </li>
+            </ul>
+            <div class="Product">
+                <div class="ProductCard">
+                    <div class="ProductCard-look">
+                        <form id="imgForm" method="post" enctype="multipart/form-data" action="#"
+                        th:action="${'/books/'+slugBook.slug+'/img/save'}">
+                            <div class="ProductCard-photo" id="uploadButton">
+                                <img th:src="${slugBook.image}" alt="card.jpg"/>
+                            </div>
+                            <!-- в атрибуте accept указываем что данная форма будет принимать только изображения -->
+                            <input type="file" name="file" id="dialog" style="display: none" accept="image/*"/>
+                        </form>
+                    </div>
+                    <div class="ProductCard-desc" th:replace="~{fragments/book_description_fragment :: bookDesc}"></div>
+                </div>
+                <div class="Product-comments">
+                    <div class="Product-comments-header">
+                        <h3 class="Product-comments-title">Отзывы</h3>
+                        <span class="Product-comments-amount" th:text="${reviewList.size() + ' отзыв(ов)'}">567 отзывов</span>
+                    </div>
+                </div>
+                <form th:method="post" th:action="@{/books/{slug}/review(slug=${slugBook.slug})}" th:object="${bookReview}">
+                    <input type="text" style="width: 1000px; height: 60px; border: 1px solid lightgray; border-radius: 5px;"
+                           placeholder=" Напишите отзыв" th:field="*{text}">
+                    <input class="btn btn_primary" type="submit" value="Отправить">
+                </form>
+                <br>
+                <div th:replace="~{fragments/book_reviews_fragment :: reviewBlock}"></div>
+            </div>
+        </main>
+    </div>
+</div>
+<footer class="Footer" th:replace="~{fragments/common_footer_fragment :: footer}"></footer>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+<script src="/assets/js/UploadNewBookImageScript.js"></script>
+<script src="/assets/js/DownloadBookWindowScript.js"></script>
+<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+</body>
+</html>

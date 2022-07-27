@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{topbar.news}">Новинки</title>
+    <meta name="description" content="Описание страницы">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link href="favicon.ico" rel="shortcut icon">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/fonts.min.css?v=09585989">
+    <link rel="stylesheet" href="/assets/css/basic.min.css?v=09585989">
+    <link rel="stylesheet" href="/assets/css/extra.min.css?v=09585989">
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<!--    <script defer src="/assets/js/scripts.min.js?v=09585989"></script>-->
+    <script defer src="/assets/js/scripts.min.js"></script>
+</head>
+<body class="Site">
+<header class="Header"
+        th:replace="~{fragments/common_header_fragment :: head(recent='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
+<div class="Middle">
+    <div class="wrap">
+        <main class="Middle-main">
+            <li class="breadcrumbs-item"><a th:href="@{/}" href="/index.html" th:text="#{topbar.main}"></a>
+            </li>
+            <li class="breadcrumbs-item breadcrumbs-item_current"><span th:text="#{topbar.news}"></span>
+            </li>
+            <div class="Section">
+                <div class="Section-header">
+                    <h1 class="Section-title" th:text="#{topbar.news}">Новинки
+                    </h1>
+                    <form class="form form_inline Section-header-form" action="#"  method="post" >
+                        <div class="form-group">
+                            <label class="form-label">с
+                            </label>
+                            <input class="form-input form-input_date form-input_date_uninit" id="fromdaterecent"
+                                   name="fromdaterecent" type="text" placeholder="Дата" data-refreshoffset="0"
+                                   data-refreshlimit="20" data-refreshshow="changedate" data-refreshfrom="0"
+                                   autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">по
+                            </label>
+                            <input class="form-input form-input_date form-input_date_uninit" id="enddaterecent"
+                                   name="enddaterecent" type="text" placeholder="Дата" data-refreshoffset="0"
+                                   data-refreshlimit="20" data-refreshshow="changedate" data-refreshto="0"
+                                   autocomplete="off" />
+                        </div>
+                    </form>
+                </div>
+                <div class="Cards Cards_refresh">
+                    <div class="Card" th:each="book : ${recentListByDate}">
+                        <div class="Card-picture">
+                            <a href="#" th:href="@{/books/{slug}(slug=${book.slug})}">
+                                <img th:src="${book.image}" alt="card.jpg"/>
+                            </a>
+                        </div>
+                        <div class="Card-content">
+                            <strong class="Card-title"><a th:href="@{/books/{slug}(slug=${book.slug})}"
+                                                          th:text="${book.title}">Техника</a>
+                            </strong>
+                            <div class="Card-description" th:text="${book.author}">Кондратенко Александр Петрович
+                            </div>
+                            <div class="Card-cost">
+                                <span th:if="${book.priceOld ne 0}" class="Card-priceOld" th:text="${book.priceOld}">₽300.00</span>
+                                <span class="Card-price" th:text="${book.price}">₽190.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Cards-footer Cards-footer_center"> <a class="btn btn_primary" href="#"
+                                                                      data-refreshshow="recent"
+                                                                      data-refreshoffset="0"
+                                                                      data-refreshlimit="20"
+                                                                      th:text="#{topbar.showmore}">Показать еще</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<footer class="Footer" th:replace="~{fragments/common_footer_fragment :: footer}"></footer>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+</body>
+</html>
